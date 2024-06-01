@@ -14,28 +14,38 @@
 
 // flow of game Obj
 
-const game = (function () {
-  let gameboard = ['_', '_', '_',
-                   '_', '_', '_',
-                   '_', '_', '_'
-                  ]
+function Gameboard() {
+  const board = []
 
-  const insertX = (location) => gameboard[location] = 'X'
-  const insertO = (location) => gameboard[location] = 'O'
-  const showBoard = () => console.log(gameboard)
+  for (let i = 0; i < 9; i ++) {
+    board.push(Cell());
+  }
+  const getBoard = () => board;
 
-  return { insertX, insertO, showBoard, gameboard}
-})();
+  const insertToken = (idx, player) => {
+    //check if cell if filled ? invalid try again : insert into cell
+  }
 
-const playerX = (function () {
-  const insert  = (idx) => game.insertX(idx)
-  return { insert }
-})();
+  const printBoard = () => {
+    for (let i = 0; i < 9; i += 3) {
+      console.log(`${board[i].getValue()}, ${board[i+1].getValue()}, ${board[i+2].getValue()}`)
+    }
+  }
 
-const playerO = (function () {
-  const insert  = (idx) => game.insertO(idx);
-  return { insert }
-})();
+  return { getBoard, insertToken, printBoard }
+};
+
+function Cell() {
+  let value = '0';
+
+  const addToken = (player) => {
+    value = player;
+  };
+
+  const getValue = () => value;
+
+  return { addToken, getValue };
+};
 
 const gameflow = (function () {
   const startGame = function() {
