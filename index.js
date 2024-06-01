@@ -22,7 +22,7 @@ function Gameboard() {
   }
   const getBoard = () => board;
 
-  const insertToken = (idx, player) => {
+  const insertToken = (idx, playerToken) => {
     //check if cell if filled ? invalid try again : insert into cell
   }
 
@@ -46,6 +46,30 @@ function Cell() {
 
   return { addToken, getValue };
 };
+
+function GameController() {
+
+  const board = Gameboard()
+
+  players = [
+             { name: 'Player1', token: 1 },
+             { name: 'Player2', token: 2 }
+            ]
+  let activePlayer = players[0]
+  function getActivePlayer() {
+    return activePlayer;
+  }
+  function switchPlayerTurn() { 
+    if (activePlayer === players[0]) {
+      activePlayer = players[1];
+    } else {
+      activePlayer = players[0];
+    }
+  }
+  return {getActivePlayer, switchPlayerTurn}
+}
+
+game = GameController()
 
 const gameflow = (function () {
   const startGame = function() {
