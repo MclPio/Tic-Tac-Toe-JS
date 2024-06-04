@@ -23,7 +23,7 @@ function Gameboard() {
   const getBoard = () => board;
 
   const insertToken = (idx, playerToken) => {
-    //check if cell if filled ? invalid try again : insert into cell
+      board[idx].addToken(playerToken)
   }
 
   const printBoard = () => {
@@ -66,7 +66,41 @@ function GameController() {
       activePlayer = players[0];
     }
   }
-  return {getActivePlayer, switchPlayerTurn}
+
+  function playerInput(){
+    while (true) {
+      input = parseInt(prompt('Enter a value between 0 and 8:'));
+      if (Number.isInteger(input));
+        if (input >= 0 && input <= 8) {
+          if (board.getBoard()[input].getValue() != '0') {
+            console.log('Cell is filled')
+          } else {
+            return input;
+          }
+        };
+    };
+  };
+
+  function start() {
+    let i = 0;
+    while (i < 9){
+      console.log(`${getActivePlayer().name} turn:`);
+      board.insertToken(playerInput(), getActivePlayer().token);
+      board.printBoard();
+      // check win condition...
+      switchPlayerTurn();
+      i++;
+    };
+  };
+  // start
+  //   ask for player 1 input
+  //   display_board
+  //   check for winner
+  //   ask for player 2 input
+  //   display board
+  //   check for winner
+
+  return {getActivePlayer, switchPlayerTurn, start}
 }
 
 game = GameController()
