@@ -138,7 +138,8 @@ function GameController() {
       i++;
     };
   }
-  return {getActivePlayer, switchPlayerTurn, start, board}
-}
+  return { start }
+};
 
-game = GameController()
+function displayController() {
+}
