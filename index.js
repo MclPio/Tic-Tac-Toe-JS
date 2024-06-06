@@ -49,7 +49,7 @@ function Cell() {
 
 function GameController() {
 
-  const board = Gameboard()
+  let board = Gameboard()
 
   players = [
              { name: 'Player1', token: 1 },
@@ -80,6 +80,47 @@ function GameController() {
         };
     };
   };
+  function winCheck(sign) {
+    function diagonal(sign) {
+      if (board.getBoard()[0].getValue() === sign && board.getBoard()[4].getValue() === sign && board.getBoard()[8].getValue() === sign) {
+        return true
+      } else if (board.getBoard()[2].getValue() === sign && board.getBoard()[4].getValue() === sign && board.getBoard()[6].getValue() === sign) {
+        return true
+      } else {
+        return false
+      }
+    }
+  
+    function vertical(sign) {
+      if (board.getBoard()[0].getValue() === sign && board.getBoard()[3].getValue() === sign && board.getBoard()[6].getValue() === sign) {
+        return true
+      } else if (board.getBoard()[1].getValue() === sign && board.getBoard()[4].getValue() === sign && board.getBoard()[7].getValue() === sign) {
+        return true
+      } else if (board.getBoard()[2].getValue() === sign && board.getBoard()[5].getValue() === sign && board.getBoard()[8].getValue() === sign){
+        return true
+      } else {
+        return false
+      }
+    }
+  
+    function horizontal(sign) {
+      if (board.getBoard()[0].getValue() === sign && board.getBoard()[1].getValue() === sign && board.getBoard()[2].getValue() === sign) {
+        return true
+      } else if (board.getBoard()[3].getValue() === sign && board.getBoard()[4].getValue() === sign && board.getBoard()[5].getValue() === sign) {
+        return true
+      } else if (board.getBoard()[6].getValue() === sign && board.getBoard()[7].getValue() === sign && board.getBoard()[8].getValue() === sign){
+        return true
+      } else {
+        return false
+      }
+    }
+
+    if (diagonal(sign) || vertical(sign) || horizontal(sign)){
+      return true
+    } else {
+      return false
+    }
+  }
 
   function start() {
     let i = 0;
@@ -87,93 +128,17 @@ function GameController() {
       console.log(`${getActivePlayer().name} turn:`);
       board.insertToken(playerInput(), getActivePlayer().token);
       board.printBoard();
-      // check win condition...
+      console.log(winCheck(getActivePlayer().token))
+      if (winCheck(getActivePlayer().token) === true){
+        console.log(`${getActivePlayer().name} wins!`)
+        board = Gameboard()
+        break
+      }
       switchPlayerTurn();
       i++;
     };
-  };
-  // start
-  //   ask for player 1 input
-  //   display_board
-  //   check for winner
-  //   ask for player 2 input
-  //   display board
-  //   check for winner
-
-  return {getActivePlayer, switchPlayerTurn, start}
+  }
+  return {getActivePlayer, switchPlayerTurn, start, board}
 }
 
 game = GameController()
-
-const gameflow = (function () {
-  const startGame = function() {
-    game.showBoard();
-    while (winCheck) {
-      userInput(playerX);
-      game.showBoard();
-      winCheck();
-      userInput(playerO);
-      game.showBoard();
-      winCheck();
-    }
-  }
-
-  const userInput = function(player) {
-    while (true) {
-      input = parseInt(prompt("Enter sign location, choose a value from 0-8"))
-
-      if (input >= 0 && input <= 8 && Number.isInteger(input)) {
-        break
-      } else {
-        console.log("Enter a valid input")
-      }
-    }
-    player.insert(input)
-  }
-
-  const winCheck = function() {
-    // return true if win condition
-    const diagonal = function(sign) {
-      if (game.gameboard[0] === sign && game.gameboard[4] === sign && game.gameboard[8] === sign) {
-        return true
-      } else if (game.gameboard[2] === sign && game.gameboard[4] === sign && game.gameboard[6] === sign) {
-        return true
-      } else {
-        return false
-      }
-    }
-  
-    const vertical = function(sign) {
-      if (game.gameboard[0] === sign && game.gameboard[3] === sign && game.gameboard[6] === sign) {
-        return true
-      } else if (game.gameboard[1] === sign && game.gameboard[4] === sign && game.gameboard[7] === sign) {
-        return true
-      } else if (game.gameboard[2] === sign && game.gameboard[5] === sign && game.gameboard[8] === sign){
-        return true
-      } else {
-        return false
-      }
-    }
-  
-    const horizontal = function(sign) {
-      if (game.gameboard[0] === sign && game.gameboard[1] === sign && game.gameboard[2] === sign) {
-        return true
-      } else if (game.gameboard[3] === sign && game.gameboard[4] === sign && game.gameboard[5] === sign) {
-        return true
-      } else if (game.gameboard[6] === sign && game.gameboard[7] === sign && game.gameboard[8] === sign){
-        return true
-      } else {
-        return false
-      }
-    }
-
-    diagonal('X');
-    vertical('X');
-    horizontal('X');
-    diagonal('O');
-    vertical('O');
-    horizontal('O');
-  }
-
-  return { startGame }
-})();
