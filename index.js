@@ -16,9 +16,6 @@
 
 function Gameboard() {
   const board = []
-  const display = displayController()
-  //push board changes to display...
-  
   for (let i = 0; i < 9; i ++) {
     board.push(Cell());
   }
@@ -52,6 +49,7 @@ function Cell() {
 function GameController() {
 
   let board = Gameboard()
+  let display = displayController()
 
   players = [
              { name: 'Player1', token: 1 },
@@ -144,14 +142,10 @@ function GameController() {
 };
 
 function displayController() {
-  function updateButtons(){
+  function updateButtons(board){
     buttons = document.getElementsByClassName('tic-tac-toe-button')
-    for (let button of buttons){
-      button.textContent = 'hi';
-    }
+    
   }
 
   return { updateButtons }
 }
-
-displayController().updateButtons()
