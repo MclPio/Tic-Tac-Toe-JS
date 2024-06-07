@@ -122,30 +122,59 @@ function GameController() {
     }
   }
 
-  function start() {
-    let i = 0;
-    while (i < 9){
-      console.log(`${getActivePlayer().name} turn:`);
-      board.insertToken(playerInput(), getActivePlayer().token);
-      board.printBoard();
-      console.log(winCheck(getActivePlayer().token))
-      if (winCheck(getActivePlayer().token) === true){
-        console.log(`${getActivePlayer().name} wins!`)
-        board = Gameboard()
-        break
-      }
-      switchPlayerTurn();
-      i++;
-    };
+  function play() {
+    display.announceTurn(getActivePlayer().name);
+    display.clickEvent(getActivePlayer().token, board);
+    //wait for button to get clicked
+    //update board object with click
+    //update display with click
+    //check for win
+    //switch player turn
+
   }
-  return { start }
+  // function start() {
+    
+  //   let i = 0;
+  //   while (i < 9){
+  //     let boardObj = board.getBoard()
+  //     console.log(`${getActivePlayer().name} turn:`);
+  //     board.insertToken(playerInput(), getActivePlayer().token);
+  //     board.printBoard();
+  //     display.updateButtons(boardObj);
+  //     if (winCheck(getActivePlayer().token) === true){
+  //       console.log(`${getActivePlayer().name} wins!`)
+  //       board = Gameboard()
+  //       break
+  //     }
+  //     switchPlayerTurn();
+  //     i++;
+  //   };
+  // }
+  return { play }
 };
 
 function displayController() {
   function updateButtons(board){
     buttons = document.getElementsByClassName('tic-tac-toe-button')
-    
+    for (i in board){
+      buttons[i].textContent = board[i].getValue()
+    }
   }
 
-  return { updateButtons }
+  function announceTurn(playerName){
+    turnAnnouncement = document.getElementById('turn-announcement')
+    turnAnnouncement.textContent = `${playerName} turn`
+  }
+  function clickEvent(playerToken, boardObj){
+    const gridContainer = document.getElementById("grid-container")
+    // Event Delegation https://www.freecodecamp.org/news/event-delegation-javascript/
+    gridContainer.addEventListener("click", (event) => {
+      buttonIndex = event.target.dataset.index
+      boardObj.insertToken(buttonIndex, playerToken);
+    })
+  }
+
+  return { updateButtons, announceTurn, clickEvent };
 }
+
+GameController().play()
