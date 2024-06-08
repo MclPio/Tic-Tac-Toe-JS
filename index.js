@@ -122,11 +122,21 @@ function GameController() {
     }
   }
 
+  function clickEvent(playerToken, boardObj){
+    const gridContainer = document.getElementById("grid-container")
+    // Event Delegation https://www.freecodecamp.org/news/event-delegation-javascript/
+    gridContainer.addEventListener("click", (event) => {
+      buttonIndex = event.target.dataset.index
+      boardObj.insertToken(buttonIndex, playerToken);
+      updateButtons(boardObj)
+      console.log(boardObj.printBoard())
+    })
+
+  }
+
   function play() {
     display.announceTurn(getActivePlayer().name);
-    display.clickEvent(getActivePlayer().token, board);
-    //wait for button to get clicked
-    //update board object with click
+    display.clickEvent(getActivePlayer().token, board); // click event will have to be changing players and looping
     //update display with click
     //check for win
     //switch player turn
@@ -154,24 +164,16 @@ function GameController() {
 };
 
 function displayController() {
-  function updateButtons(board){
+  function updateButtons(boardObj){
     buttons = document.getElementsByClassName('tic-tac-toe-button')
-    for (i in board){
-      buttons[i].textContent = board[i].getValue()
+    for (i in boardObj.getBoard()){
+      buttons[i].textContent = boardObj.getBoard()[i].getValue()
     }
   }
 
   function announceTurn(playerName){
     turnAnnouncement = document.getElementById('turn-announcement')
     turnAnnouncement.textContent = `${playerName} turn`
-  }
-  function clickEvent(playerToken, boardObj){
-    const gridContainer = document.getElementById("grid-container")
-    // Event Delegation https://www.freecodecamp.org/news/event-delegation-javascript/
-    gridContainer.addEventListener("click", (event) => {
-      buttonIndex = event.target.dataset.index
-      boardObj.insertToken(buttonIndex, playerToken);
-    })
   }
 
   return { updateButtons, announceTurn, clickEvent };
