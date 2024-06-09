@@ -153,14 +153,50 @@ function GameController() {
    });
   };
 
+  function restartButton() {
+    const restartButton = document.createElement('button');
+    restartButton.innerText = 'Restart';
+    restartButton.id = 'restartGame';
+    const main = document.getElementById('main-section');
+    main.appendChild(restartButton);
+  }
+
   function queue() {
     // get player names
     // call the play function
     // ask for restarts once games finish
     // keep count of score?
-    main = document.getElementById('game-menu')
-    main.textContent = 'hi'
-    // create form
+    const main = document.getElementById('game-menu');
+    const player1NameInput = document.createElement('input');
+    const player2NameInput = document.createElement('input');
+    const player1NameLabel = document.createElement('label');
+    const player2NameLabel = document.createElement('label');
+    const submitButton = document.createElement('button');
+    submitButton.id = 'submitNames'
+    submitButton.innerText = 'Submit'
+    player1NameLabel.htmlFor = 'player1NameInput';
+    player2NameLabel.htmlFor = 'player2NameInput';
+    player1NameLabel.innerText = 'Player 1';
+    player2NameLabel.innerText = 'Player 2';
+    player1NameInput.id = 'player1NameInput';
+    player2NameInput.id = 'player2NameInput';
+
+    main.appendChild(player1NameLabel);
+    main.appendChild(player1NameInput);
+    main.appendChild(player2NameLabel);
+    main.appendChild(player2NameInput);
+    main.appendChild(submitButton);
+    
+    submitButton.addEventListener('click', () => {      
+      if (player1NameInput.value && player2NameInput.value) {
+        players[0].name = player1NameInput.value
+        players[1].name = player2NameInput.value
+        main.classList.add('hidden')
+        document.getElementById('grid-container').classList.remove('hidden')
+        play();
+        restartButton();
+      }
+    })
   }
   
   return { queue }
