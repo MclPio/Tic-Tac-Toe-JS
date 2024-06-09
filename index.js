@@ -142,7 +142,7 @@ function GameController() {
         console.log(players)
         board = Gameboard();
         display.updateButtons(board);
-        // display.updateScore(); // <-------- Implement under display
+        display.updateScore()
       } else if (board.stepsLeft() == false) {
         console.log(`Tie game`)
         board = Gameboard();
@@ -190,6 +190,7 @@ function GameController() {
         main.classList.add('hidden')
         document.getElementById('game-display').classList.remove('hidden')
         play();
+        display.setScoreNames()
         restartButton();
       }
     })
@@ -216,21 +217,26 @@ function displayController() {
   }
 
   function setScoreNames(){
-    // get players names and input to dom
+    player1Name = document.getElementById('player1Name');
+    player2Name = document.getElementById('player2Name');
+    player1Name.innerText = players[0].name
+    player2Name.innerText = players[1].name
   }
 
 
   function updateScore(){
-    // after each win update dom scoreboard from players score.
+    player1Score = document.getElementById('player1Score');
+    player2Score = document.getElementById('player2Score');
+    player1Score.innerText = players[0].score;
+    player2Score.innerText = players[1].score;
   }
 
-  return { updateButtons, announceTurn };
+  return { updateButtons, announceTurn, setScoreNames, updateScore };
 };
 
 GameController().queue()
 // todo:
-// keep count of score?
 // display element that shows the results upon game end
-// ask for restarts once games finish
+// ask for continue once games finish
 // at first randomly choose 
 // implement restart button, so game score resets
