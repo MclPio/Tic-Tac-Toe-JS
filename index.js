@@ -60,8 +60,8 @@ function GameController() {
   let display = displayController()
 
   players = [
-             { name: 'Player1', token: 1 },
-             { name: 'Player2', token: 2 }
+             { name: 'Player1', token: 1, score: 0 },
+             { name: 'Player2', token: 2, score: 0 }
             ]
   let activePlayer = players[0]
   function getActivePlayer() {
@@ -132,22 +132,22 @@ function GameController() {
     display.announceTurn(getActivePlayer().name);
     const gridContainer = document.getElementById("grid-container");
     gridContainer.addEventListener("click", (event) => {
-      console.log(board.stepsLeft())
       let buttonIndex = event.target.dataset.index
-      console.log(buttonIndex)
       let clean_input = playerInput(buttonIndex)
       board.insertToken(clean_input, getActivePlayer().token);
       display.updateButtons(board);
       if (winCheck(getActivePlayer().token) === true){
         console.log(`${getActivePlayer().name} wins!`)
+        getActivePlayer().score += 1;
+        console.log(players)
         board = Gameboard();
         display.updateButtons(board);
+        // display.updateScore(); // <-------- Implement under display
       } else if (board.stepsLeft() == false) {
         console.log(`Tie game`)
         board = Gameboard();
         display.updateButtons(board);
       }
-      board.printBoard()
       switchPlayerTurn();
       display.announceTurn(getActivePlayer().name);
    });
@@ -162,10 +162,6 @@ function GameController() {
   }
 
   function queue() {
-    // get player names
-    // call the play function
-    // ask for restarts once games finish
-    // keep count of score?
     const main = document.getElementById('game-menu');
     const player1NameInput = document.createElement('input');
     const player2NameInput = document.createElement('input');
@@ -173,7 +169,7 @@ function GameController() {
     const player2NameLabel = document.createElement('label');
     const submitButton = document.createElement('button');
     submitButton.id = 'submitNames'
-    submitButton.innerText = 'Submit'
+    submitButton.innerText = 'Start'
     player1NameLabel.htmlFor = 'player1NameInput';
     player2NameLabel.htmlFor = 'player2NameInput';
     player1NameLabel.innerText = 'Player 1';
@@ -192,7 +188,7 @@ function GameController() {
         players[0].name = player1NameInput.value
         players[1].name = player2NameInput.value
         main.classList.add('hidden')
-        document.getElementById('grid-container').classList.remove('hidden')
+        document.getElementById('game-display').classList.remove('hidden')
         play();
         restartButton();
       }
@@ -219,11 +215,22 @@ function displayController() {
     turnAnnouncement.textContent = `${playerName} turn`
   }
 
+  function setScoreNames(){
+    // get players names and input to dom
+  }
+
+
+  function updateScore(){
+    // after each win update dom scoreboard from players score.
+  }
+
   return { updateButtons, announceTurn };
 };
 
 GameController().queue()
 // todo:
-// allow players to put in their names
-// include a button to start/restart the game
+// keep count of score?
 // display element that shows the results upon game end
+// ask for restarts once games finish
+// at first randomly choose 
+// implement restart button, so game score resets
