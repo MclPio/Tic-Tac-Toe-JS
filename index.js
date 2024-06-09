@@ -152,15 +152,29 @@ function GameController() {
       display.announceTurn(getActivePlayer().name);
    });
   };
+
+  function queue() {
+    // get player names
+    // call the play function
+    // ask for restarts once games finish
+    // keep count of score?
+    main = document.getElementById('game-menu')
+    main.textContent = 'hi'
+    // create form
+  }
   
-  return { play }
+  return { queue }
 };
 
 function displayController() {
   function updateButtons(boardObj){
     buttons = document.getElementsByClassName('tic-tac-toe-button')
     for (i in boardObj.getBoard()){
-      buttons[i].textContent = boardObj.getBoard()[i].getValue()
+      if (boardObj.getBoard()[i].getValue() != 0){
+        buttons[i].textContent = boardObj.getBoard()[i].getValue()
+      } else {
+        buttons[i].textContent = null
+      }
     }
   }
 
@@ -170,6 +184,10 @@ function displayController() {
   }
 
   return { updateButtons, announceTurn };
-}
+};
 
-GameController().play()
+GameController().queue()
+// todo:
+// allow players to put in their names
+// include a button to start/restart the game
+// display element that shows the results upon game end
