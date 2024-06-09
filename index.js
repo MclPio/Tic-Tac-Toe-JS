@@ -24,6 +24,14 @@ function Gameboard() {
   const insertToken = (idx, playerToken) => {
       board[idx].addToken(playerToken)
   }
+  const stepsLeft = () => {
+    for (i in board) {
+      if (board[i].getValue() === '0') {
+        return true
+      }
+    }
+    return false
+  }
 
   const printBoard = () => {
     for (let i = 0; i < 9; i += 3) {
@@ -31,7 +39,7 @@ function Gameboard() {
     }
   }
 
-  return { getBoard, insertToken, printBoard }
+  return { getBoard, insertToken, printBoard, stepsLeft }
 };
 
 function Cell() {
@@ -67,18 +75,16 @@ function GameController() {
     }
   }
 
-  function playerInput(){
-    while (true) {
-      input = parseInt(prompt('Enter a value between 0 and 8:'));
-      if (Number.isInteger(input));
-        if (input >= 0 && input <= 8) {
-          if (board.getBoard()[input].getValue() != '0') {
-            console.log('Cell is filled')
-          } else {
-            return input;
-          }
-        };
-    };
+  function playerInput(idx){
+    input = parseInt(idx);
+    if (Number.isInteger(input));
+      if (input >= 0 && input <= 8) {
+        if (board.getBoard()[input].getValue() != '0') {
+          console.log('Cell is filled')
+        } else {
+          return input;
+        }
+      };
   };
   function winCheck(sign) {
     function diagonal(sign) {
@@ -122,44 +128,31 @@ function GameController() {
     }
   }
 
-  function clickEvent(playerToken, boardObj){
-    const gridContainer = document.getElementById("grid-container")
-    // Event Delegation https://www.freecodecamp.org/news/event-delegation-javascript/
-    gridContainer.addEventListener("click", (event) => {
-      buttonIndex = event.target.dataset.index
-      boardObj.insertToken(buttonIndex, playerToken);
-      updateButtons(boardObj)
-      console.log(boardObj.printBoard())
-    })
-
-  }
-
   function play() {
     display.announceTurn(getActivePlayer().name);
-    display.clickEvent(getActivePlayer().token, board); // click event will have to be changing players and looping
-    //update display with click
-    //check for win
-    //switch player turn
-
-  }
-  // function start() {
-    
-  //   let i = 0;
-  //   while (i < 9){
-  //     let boardObj = board.getBoard()
-  //     console.log(`${getActivePlayer().name} turn:`);
-  //     board.insertToken(playerInput(), getActivePlayer().token);
-  //     board.printBoard();
-  //     display.updateButtons(boardObj);
-  //     if (winCheck(getActivePlayer().token) === true){
-  //       console.log(`${getActivePlayer().name} wins!`)
-  //       board = Gameboard()
-  //       break
-  //     }
-  //     switchPlayerTurn();
-  //     i++;
-  //   };
-  // }
+    const gridContainer = document.getElementById("grid-container");
+    gridContainer.addEventListener("click", (event) => {
+      console.log(board.stepsLeft())
+      let buttonIndex = event.target.dataset.index
+      console.log(buttonIndex)
+      let clean_input = playerInput(buttonIndex)
+      board.insertToken(clean_input, getActivePlayer().token);
+      display.updateButtons(board);
+      if (winCheck(getActivePlayer().token) === true){
+        console.log(`${getActivePlayer().name} wins!`)
+        board = Gameboard();
+        display.updateButtons(board);
+      } else if (board.stepsLeft() == false) {
+        console.log(`Tie game`)
+        board = Gameboard();
+        display.updateButtons(board);
+      }
+      board.printBoard()
+      switchPlayerTurn();
+      display.announceTurn(getActivePlayer().name);
+   });
+  };
+  
   return { play }
 };
 
@@ -176,7 +169,7 @@ function displayController() {
     turnAnnouncement.textContent = `${playerName} turn`
   }
 
-  return { updateButtons, announceTurn, clickEvent };
+  return { updateButtons, announceTurn };
 }
 
 GameController().play()
