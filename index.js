@@ -128,17 +128,17 @@ function GameController() {
     }
   }
 
-  function continueGame() {
-    const gameDisplay = document.getElementById('game-display')
-    const continueButton = document.createElement('button')
-    continueButton.id = 'continue-button'
-    continueButton.innerText = 'Continue'
-    gameDisplay.append(continueButton)
-    continueButton.addEventListener("click", () => {
-      continueButton.remove();
-      return true;
-    })
-  }
+  // function continueGame() {
+  //   const gameDisplay = document.getElementById('game-display')
+  //   const continueButton = document.createElement('button')
+  //   continueButton.id = 'continue-button'
+  //   continueButton.innerText = 'Continue'
+  //   gameDisplay.append(continueButton)
+  //   continueButton.addEventListener("click", () => {
+  //     continueButton.remove();
+  //     return true;
+  //   })
+  // }
 
   function play() {
     display.announceTurn(getActivePlayer().name);
@@ -152,8 +152,6 @@ function GameController() {
         if (winCheck(getActivePlayer().token) === true){
           display.announceResults(`${getActivePlayer().name} wins!`)
           getActivePlayer().score += 1;
-          // need to pause here until a button is clicked...
-          continueGame();
           board = Gameboard();
           display.updateButtons(board);
           display.updateScore(players)
@@ -174,9 +172,19 @@ function GameController() {
     resetButton.id = 'resetGame';
     const main = document.getElementById('main-section');
     main.appendChild(resetButton);
+
+    resetButton.addEventListener('click', () => {
+      if (window.confirm("Are you sure?")){
+        players[0].score = 0;
+        players[1].score = 0;
+        display.updateScore(players);
+        board = Gameboard();
+        display.updateButtons(board);
+      }
+    })
   }
 
-  function queue() {
+  function setUp() {
     const main = document.getElementById('game-menu');
     const player1NameInput = document.createElement('input');
     const player2NameInput = document.createElement('input');
@@ -211,7 +219,7 @@ function GameController() {
     })
   }
   
-  return { queue }
+  return { setUp }
 };
 
 function displayController() {
@@ -254,7 +262,7 @@ function displayController() {
   return { updateButtons, announceTurn, setScoreNames, updateScore, announceResults };
 };
 
-GameController().queue()
+GameController().setUp()
 // todo:
 // display element that shows the results upon game end
 // ask for continue once games finish
