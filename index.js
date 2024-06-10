@@ -128,37 +128,52 @@ function GameController() {
     }
   }
 
+  function continueGame() {
+    const gameDisplay = document.getElementById('game-display')
+    const continueButton = document.createElement('button')
+    continueButton.id = 'continue-button'
+    continueButton.innerText = 'Continue'
+    gameDisplay.append(continueButton)
+    continueButton.addEventListener("click", () => {
+      continueButton.remove();
+      return true;
+    })
+  }
+
   function play() {
     display.announceTurn(getActivePlayer().name);
     const gridContainer = document.getElementById("grid-container");
     gridContainer.addEventListener("click", (event) => {
       let buttonIndex = event.target.dataset.index
       let clean_input = playerInput(buttonIndex)
-      board.insertToken(clean_input, getActivePlayer().token);
-      display.updateButtons(board);
-      if (winCheck(getActivePlayer().token) === true){
-        console.log(`${getActivePlayer().name} wins!`)
-        getActivePlayer().score += 1;
-        // Pause here to to view gameboard, click a button to continue
-        board = Gameboard();
+      if (clean_input || clean_input == '0'){
+        board.insertToken(clean_input, getActivePlayer().token);
         display.updateButtons(board);
-        display.updateScore(players)
-      } else if (board.stepsLeft() == false) {
-        console.log(`Tie game`)
-        board = Gameboard();
-        display.updateButtons(board);
-      }
-      switchPlayerTurn();
-      display.announceTurn(getActivePlayer().name);
+        if (winCheck(getActivePlayer().token) === true){
+          display.announceResults(`${getActivePlayer().name} wins!`)
+          getActivePlayer().score += 1;
+          // need to pause here until a button is clicked...
+          continueGame();
+          board = Gameboard();
+          display.updateButtons(board);
+          display.updateScore(players)
+        } else if (board.stepsLeft() == false) {
+          display.announceResults(`Tie game`)
+          board = Gameboard();
+          display.updateButtons(board);
+        }
+        switchPlayerTurn();
+        display.announceTurn(getActivePlayer().name);
+      };
    });
   };
 
-  function restartButton() {
-    const restartButton = document.createElement('button');
-    restartButton.innerText = 'Restart';
-    restartButton.id = 'restartGame';
+  function resetButton() {
+    const resetButton = document.createElement('button');
+    resetButton.innerText = 'Reset';
+    resetButton.id = 'resetGame';
     const main = document.getElementById('main-section');
-    main.appendChild(restartButton);
+    main.appendChild(resetButton);
   }
 
   function queue() {
@@ -191,7 +206,7 @@ function GameController() {
         document.getElementById('game-display').classList.remove('hidden')
         play();
         display.setScoreNames(players)
-        restartButton();
+        resetButton();
       }
     })
   }
@@ -216,6 +231,11 @@ function displayController() {
     turnAnnouncement.textContent = `${playerName} turn`
   }
 
+  function announceResults(string){
+    announcementHeader = document.getElementById('announce-results');
+    announcementHeader.textContent = string
+  }
+
   function setScoreNames(players){
     player1Name = document.getElementById('player1Name');
     player2Name = document.getElementById('player2Name');
@@ -225,13 +245,13 @@ function displayController() {
 
 
   function updateScore(players){
-    player1Score = document.getElementById('player1Score');
-    player2Score = document.getElementById('player2Score');
+    const player1Score = document.getElementById('player1Score');
+    const player2Score = document.getElementById('player2Score');
     player1Score.innerText = players[0].score;
     player2Score.innerText = players[1].score;
   }
 
-  return { updateButtons, announceTurn, setScoreNames, updateScore };
+  return { updateButtons, announceTurn, setScoreNames, updateScore, announceResults };
 };
 
 GameController().queue()
