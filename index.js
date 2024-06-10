@@ -59,7 +59,7 @@ function GameController() {
   let board = Gameboard()
   let display = displayController()
 
-  players = [
+  const players = [
              { name: 'Player1', token: 1, score: 0 },
              { name: 'Player2', token: 2, score: 0 }
             ]
@@ -139,10 +139,10 @@ function GameController() {
       if (winCheck(getActivePlayer().token) === true){
         console.log(`${getActivePlayer().name} wins!`)
         getActivePlayer().score += 1;
-        console.log(players)
+        // Pause here to to view gameboard, click a button to continue
         board = Gameboard();
         display.updateButtons(board);
-        display.updateScore()
+        display.updateScore(players)
       } else if (board.stepsLeft() == false) {
         console.log(`Tie game`)
         board = Gameboard();
@@ -190,7 +190,7 @@ function GameController() {
         main.classList.add('hidden')
         document.getElementById('game-display').classList.remove('hidden')
         play();
-        display.setScoreNames()
+        display.setScoreNames(players)
         restartButton();
       }
     })
@@ -216,7 +216,7 @@ function displayController() {
     turnAnnouncement.textContent = `${playerName} turn`
   }
 
-  function setScoreNames(){
+  function setScoreNames(players){
     player1Name = document.getElementById('player1Name');
     player2Name = document.getElementById('player2Name');
     player1Name.innerText = players[0].name
@@ -224,7 +224,7 @@ function displayController() {
   }
 
 
-  function updateScore(){
+  function updateScore(players){
     player1Score = document.getElementById('player1Score');
     player2Score = document.getElementById('player2Score');
     player1Score.innerText = players[0].score;
