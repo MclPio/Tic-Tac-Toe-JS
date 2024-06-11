@@ -1,15 +1,12 @@
-* {
-  background-color: #fef2f2;
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+body {
+  font-family: 'Roboto', sans-serif;
 }
-
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -28,13 +25,84 @@ main {
   align-items: center;
 }
 
-button {
-  background-color: #fecaca;
+h1 {
+  color: #333;
+  font-size: 2em;
+  margin-bottom: 20px;
 }
 
 .tic-tac-toe-button {
-  font-size: 200%;
-  color: #dc2626;
-  background-color: #fecaca;
-  border-color: #7f1d1d;
+  background-color: #ffd6d6;
+  border: 2px solid #cc0000;
+  border-radius: 8px;
+  font-size: 2em;
+  color: #cc0000;
+  cursor: pointer;
+  padding: 20px;
+  transition: background-color 0.3s, transform 0.2s;
 }
+
+.tic-tac-toe-button:hover {
+  background-color: #ffcccc;
+  transform: scale(1.05);
+}
+
+.announcements {
+  font-size: 1.2em;
+  margin: 10px 0;
+  color: #555;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+#continue-reset-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+#score {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+#score div {
+  color: #333;
+  font-size: 1em;
+}
+
+#game-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+button {
+  background-color: #cc0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #b30000;
+}
+
+button:active {
+  background-color: #a30000;
+}
+

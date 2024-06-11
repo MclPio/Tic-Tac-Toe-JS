@@ -58,6 +58,7 @@ function GameController() {
 
   let board = Gameboard()
   let display = displayController()
+  let gameOver = false;
 
   const players = [
              { name: 'Player1', token: 1, score: 0 },
@@ -76,6 +77,7 @@ function GameController() {
   }
 
   function playerInput(idx){
+    if (gameOver) return;
     input = parseInt(idx);
     if (Number.isInteger(input));
       if (input >= 0 && input <= 8) {
@@ -142,6 +144,7 @@ function GameController() {
     continueButton.addEventListener('click', () => {
       continueContainer.classList.add('hidden');
       continueContainer.innerHTML = '';
+      gameOver = false;
       callback();
     });
   };
@@ -150,6 +153,7 @@ function GameController() {
     display.announceTurn(getActivePlayer().name);
     const gridContainer = document.getElementById("grid-container");
     gridContainer.addEventListener("click", (event) => {
+      if (gameOver) return;
       let buttonIndex = event.target.dataset.index
       let clean_input = playerInput(buttonIndex)
       if (clean_input || clean_input == '0'){
@@ -159,6 +163,7 @@ function GameController() {
           display.announceResults(`${getActivePlayer().name} wins!`)
           getActivePlayer().score += 1;
           display.updateScore(players)
+          gameOver = true;
           showContinueButton(() => {
             board = Gameboard();
             display.updateButtons(board);
@@ -167,6 +172,7 @@ function GameController() {
           });
         } else if (!board.stepsLeft()) {
           display.announceResults(`Tie game`)
+          gameOver = true;
           showContinueButton(() => {
             board = Gameboard();
             display.updateButtons(board);
@@ -184,8 +190,8 @@ function GameController() {
     const resetButton = document.createElement('button');
     resetButton.innerText = 'Reset';
     resetButton.id = 'resetGame';
-    const gameDisplay = document.getElementById('game-display');
-    gameDisplay.appendChild(resetButton);
+    const continueResetButtons = document.getElementById('continue-reset-buttons');
+    continueResetButtons.appendChild(resetButton);
 
     resetButton.addEventListener('click', () => {
       if (window.confirm("Are you sure?")){
@@ -194,12 +200,13 @@ function GameController() {
         display.updateScore(players);
         board = Gameboard();
         display.updateButtons(board);
+        gameOver = false;
       }
     })
   }
 
   function setUp() {
-    const main = document.getElementById('game-menu');
+    const gameMenu = document.getElementById('game-menu');
     const player1NameInput = document.createElement('input');
     const player2NameInput = document.createElement('input');
     const player1NameLabel = document.createElement('label');
@@ -214,17 +221,17 @@ function GameController() {
     player1NameInput.id = 'player1NameInput';
     player2NameInput.id = 'player2NameInput';
 
-    main.appendChild(player1NameLabel);
-    main.appendChild(player1NameInput);
-    main.appendChild(player2NameLabel);
-    main.appendChild(player2NameInput);
-    main.appendChild(submitButton);
+    gameMenu.appendChild(player1NameLabel);
+    gameMenu.appendChild(player1NameInput);
+    gameMenu.appendChild(player2NameLabel);
+    gameMenu.appendChild(player2NameInput);
+    gameMenu.appendChild(submitButton);
     
     submitButton.addEventListener('click', () => {      
       if (player1NameInput.value && player2NameInput.value) {
         players[0].name = player1NameInput.value
         players[1].name = player2NameInput.value
-        main.classList.add('hidden')
+        gameMenu.style.display = 'none'
         document.getElementById('game-display').classList.remove('hidden')
         play();
         display.setScoreNames(players)

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Tic Tac Toe</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,8 +26,13 @@
         <button class="tic-tac-toe-button" data-index="7"></button>
         <button class="tic-tac-toe-button" data-index="8"></button>
       </div>
-      <h2 id="turn-announcement"></h2>
-      <h2 id="announce-results"></h2>
+      <div class="announcements">
+        <h2 id="turn-announcement"></h2>
+        <h2 id="announce-results"></h2>
+      </div>
+      <div id="continue-reset-buttons">
+        <div id="continue-container" class="hidden"></div>
+      </div>
       <table id="score" class="willhide">
         <tr>
           <th id="player1Name">Player 1</th>
@@ -38,7 +43,6 @@
           <td id="player2Score">0</td>
         </tr>
       </table>
-      <div id="continue-container" class="hidden"></div>
     </div>
   </main>
 </body>
