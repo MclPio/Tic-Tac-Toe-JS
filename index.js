@@ -242,6 +242,11 @@ function displayController() {
     for (i in boardObj.getBoard()){
       if (boardObj.getBoard()[i].getValue() != 0){
         buttons[i].textContent = boardObj.getBoard()[i].getValue()
+        if (boardObj.getBoard()[i].getValue() == '1'){
+          buttons[i].textContent = 'X';
+        } else {
+          buttons[i].textContent = 'O';
+        }
       } else {
         buttons[i].textContent = null
       }
