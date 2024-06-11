@@ -128,17 +128,23 @@ function GameController() {
     }
   }
 
-  // function continueGame() {
-  //   const gameDisplay = document.getElementById('game-display')
-  //   const continueButton = document.createElement('button')
-  //   continueButton.id = 'continue-button'
-  //   continueButton.innerText = 'Continue'
-  //   gameDisplay.append(continueButton)
-  //   continueButton.addEventListener("click", () => {
-  //     continueButton.remove();
-  //     return true;
-  //   })
-  // }
+  function showContinueButton(callback) {
+    const continueContainer = document.getElementById('continue-container');
+    continueContainer.innerHTML = ''; // Clear any existing content
+  
+    const continueButton = document.createElement('button');
+    continueButton.id = 'continue-button';
+    continueButton.innerText = 'Continue';
+    continueContainer.appendChild(continueButton);
+  
+    continueContainer.classList.remove('hidden');
+
+    continueButton.addEventListener('click', () => {
+      continueContainer.classList.add('hidden');
+      continueContainer.innerHTML = '';
+      callback();
+    });
+  };
 
   function play() {
     display.announceTurn(getActivePlayer().name);
@@ -152,13 +158,21 @@ function GameController() {
         if (winCheck(getActivePlayer().token) === true){
           display.announceResults(`${getActivePlayer().name} wins!`)
           getActivePlayer().score += 1;
-          board = Gameboard();
-          display.updateButtons(board);
           display.updateScore(players)
-        } else if (board.stepsLeft() == false) {
+          showContinueButton(() => {
+            board = Gameboard();
+            display.updateButtons(board);
+            display.announceResults(``);
+            display.announceTurn(getActivePlayer().name);
+          });
+        } else if (!board.stepsLeft()) {
           display.announceResults(`Tie game`)
-          board = Gameboard();
-          display.updateButtons(board);
+          showContinueButton(() => {
+            board = Gameboard();
+            display.updateButtons(board);
+            display.announceResults(``);
+            display.announceTurn(getActivePlayer().name);
+          });
         }
         switchPlayerTurn();
         display.announceTurn(getActivePlayer().name);
@@ -170,8 +184,8 @@ function GameController() {
     const resetButton = document.createElement('button');
     resetButton.innerText = 'Reset';
     resetButton.id = 'resetGame';
-    const main = document.getElementById('main-section');
-    main.appendChild(resetButton);
+    const gameDisplay = document.getElementById('game-display');
+    gameDisplay.appendChild(resetButton);
 
     resetButton.addEventListener('click', () => {
       if (window.confirm("Are you sure?")){
