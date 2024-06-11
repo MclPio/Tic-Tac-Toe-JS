@@ -290,7 +290,5 @@ function displayController() {
 
 GameController().setUp()
 // todo:
-// display element that shows the results upon game end
-// ask for continue once games finish
-// at first randomly choose 
-// implement restart button, so game score resets
+// Refactor and make sure code follows factory constructor and module pattern
+// Feedback for filled cells
