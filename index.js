@@ -1,19 +1,3 @@
-// 1. have as little global variables as possible. Try tucking in factories. If need single instance of something,
-// wrap inside IIFE so it cannot reused to create additional instances.
-
-// 2. Each piece of functionality should be able to fit in the game, player, or gameboard objects.
-
-// 3. Avoid DOM/HTML/CSS until working game in console.
-
-// Gameboard Obj
-//    gameboard = []
-
-// player Obj
-// player 1
-// player 2
-
-// flow of game Obj
-
 function Gameboard() {
   const board = []
   for (let i = 0; i < 9; i ++) {
@@ -65,20 +49,22 @@ function GameController() {
              { name: 'Player2', token: 2, score: 0 }
             ]
   let activePlayer = players[0]
+
   function getActivePlayer() {
     return activePlayer;
-  }
+  };
+
   function switchPlayerTurn() { 
     if (activePlayer === players[0]) {
       activePlayer = players[1];
     } else {
       activePlayer = players[0];
     }
-  }
+  };
 
   function playerInput(idx){
     if (gameOver) return;
-    input = parseInt(idx);
+    const input = parseInt(idx);
     if (Number.isInteger(input));
       if (input >= 0 && input <= 8) {
         if (board.getBoard()[input].getValue() != '0') {
@@ -132,7 +118,7 @@ function GameController() {
 
   function showContinueButton(callback) {
     const continueContainer = document.getElementById('continue-container');
-    continueContainer.innerHTML = ''; // Clear any existing content
+    continueContainer.innerHTML = '';
   
     const continueButton = document.createElement('button');
     continueButton.id = 'continue-button';
@@ -245,7 +231,7 @@ function GameController() {
 
 const displayController = (function () {
   const updateButtons = (boardObj) => {
-    buttons = document.getElementsByClassName('tic-tac-toe-button')
+    const buttons = document.getElementsByClassName('tic-tac-toe-button')
     for (i in boardObj.getBoard()){
       if (boardObj.getBoard()[i].getValue() != 0){
         buttons[i].textContent = boardObj.getBoard()[i].getValue()
@@ -288,7 +274,4 @@ const displayController = (function () {
   return { updateButtons, announceTurn, setScoreNames, updateScore, announceResults };
 })();
 
-GameController().setUp()
-// todo:
-// Refactor and make sure code follows factory constructor and module pattern
-// Feedback for filled cells
+GameController().setUp();
