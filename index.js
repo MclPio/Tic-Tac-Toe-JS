@@ -187,6 +187,9 @@ function GameController() {
         board = Gameboard();
         display.updateButtons(board);
         gameOver = false;
+        const continueContainer = document.getElementById('continue-container');
+        continueContainer.innerHTML = '';
+        display.announceResults('');
       }
     })
   }
