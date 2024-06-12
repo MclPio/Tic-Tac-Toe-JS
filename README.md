@@ -10,8 +10,6 @@
 4. [Gettings Started](#getting-started)
 5. [How to Play](#how-to-play)
 6. [Contributing](#contributing)
-7. [License](#license)
-
 
 ## About
 The project's goal is to create a Tic Tac Toe game using JavaScript, following the principles of the Factory Function pattern and Immediately Invoked Functional Expressions (IIFE) for modular design. This approach encapsulates functionality and minimizes global variables.
@@ -83,6 +81,3 @@ Contributions are welcome! To contribute:
     git push origin feature-name
     ```
 5. Create a pull request explaining your changes.
-
-## License
-This project is licensed under the MIT License.
