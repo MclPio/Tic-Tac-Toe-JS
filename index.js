@@ -57,7 +57,7 @@ function Cell() {
 function GameController() {
 
   let board = Gameboard()
-  let display = displayController()
+  let display = displayController
   let gameOver = false;
 
   const players = [
@@ -243,8 +243,8 @@ function GameController() {
   return { setUp }
 };
 
-function displayController() {
-  function updateButtons(boardObj){
+const displayController = (function () {
+  const updateButtons = (boardObj) => {
     buttons = document.getElementsByClassName('tic-tac-toe-button')
     for (i in boardObj.getBoard()){
       if (boardObj.getBoard()[i].getValue() != 0){
@@ -258,35 +258,35 @@ function displayController() {
         buttons[i].textContent = null
       }
     }
-  }
+  };
 
-  function announceTurn(playerName){
+  const announceTurn = (playerName) => {
     turnAnnouncement = document.getElementById('turn-announcement')
     turnAnnouncement.textContent = `${playerName} turn`
-  }
+  };
 
-  function announceResults(string){
+  const announceResults = (string) => {
     announcementHeader = document.getElementById('announce-results');
     announcementHeader.textContent = string
-  }
+  };
 
-  function setScoreNames(players){
+  const setScoreNames = (players) => {
     player1Name = document.getElementById('player1Name');
     player2Name = document.getElementById('player2Name');
     player1Name.innerText = players[0].name
     player2Name.innerText = players[1].name
-  }
+  };
 
 
-  function updateScore(players){
+  const updateScore = (players) => {
     const player1Score = document.getElementById('player1Score');
     const player2Score = document.getElementById('player2Score');
     player1Score.innerText = players[0].score;
     player2Score.innerText = players[1].score;
-  }
+  };
 
   return { updateButtons, announceTurn, setScoreNames, updateScore, announceResults };
-};
+})();
 
 GameController().setUp()
 // todo:
