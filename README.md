@@ -44,7 +44,7 @@ The project's goal is to create a Tic Tac Toe game using JavaScript, following t
 
 ## Getting Started
 ### Prerequisites
-* A modern web broswer that supports JavaScript.
+* A modern web browser that supports JavaScript.
 * Basic understanding of HTML, CSS, and JavaScript.
 
 ### Installation
@@ -56,7 +56,7 @@ The project's goal is to create a Tic Tac Toe game using JavaScript, following t
     ```
     cd Tic-Tac-Toe-JS
     ```
-3. Open `index.html` in your broswer to start the game.
+3. Open `index.html` in your browser to start the game.
 
 ## How to Play
 1. Enter the names of the two players in the provided input fields.
